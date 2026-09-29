@@ -289,6 +289,16 @@ export interface PrismaClient<
   get alertRuleDispatchLog(): Prisma.AlertRuleDispatchLogDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
+   * `prisma.telegramSyncCode`: Exposes CRUD operations for the **TelegramSyncCode** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TelegramSyncCodes
+    * const telegramSyncCodes = await prisma.telegramSyncCode.findMany()
+    * ```
+    */
+  get telegramSyncCode(): Prisma.TelegramSyncCodeDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
    * `prisma.whatsAppDeliveryLog`: Exposes CRUD operations for the **WhatsAppDeliveryLog** model.
     * Example usage:
     * ```ts

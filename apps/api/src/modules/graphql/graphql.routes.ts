@@ -6,7 +6,7 @@ import type { WebSocket } from 'ws';
 import { parse, subscribe, validate, type GraphQLError, type GraphQLSchema } from 'graphql';
 import { typeDefs } from './graphql.schema';
 import { createResolvers } from './graphql.resolvers';
-import { getRedisClient } from '../../lib/redis';
+import { redis } from '../../lib/redis';
 
 interface GraphQLWireMessage {
   id?: string;
@@ -135,7 +135,6 @@ function handleGraphQLWebSocket(socket: WebSocket, schema: GraphQLSchema): void 
 }
 
 export const graphqlRoutes = async (app: FastifyInstance) => {
-  const redis = getRedisClient();
   const resolvers = createResolvers(redis);
 
   // Apollo Server owns the HTTP path. The executable schema is rebuilt only

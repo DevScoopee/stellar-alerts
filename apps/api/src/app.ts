@@ -13,6 +13,7 @@ import { paymentsRoutes } from './modules/payments/payments.routes';
 import { webhooksRoutes } from './modules/webhooks/webhooks.routes';
 import { sorobanStateRoutes } from './modules/soroban-state/soroban-state.routes';
 import { notificationsRoutes } from './modules/notifications/notifications.routes';
+import { alertRulesRoutes } from './modules/alert-rules/alert-rules.routes';
 import { deadLettersRoutes } from './modules/dead-letters/dead-letters.routes';
 import { txSimulationRoutes } from './modules/tx-simulation/tx-simulation.routes';
 import { graphqlRoutes } from './modules/graphql/graphql.routes';
@@ -153,6 +154,7 @@ export const buildApp = async () => {
   app.register(paymentsRoutes);
   app.register(webhooksRoutes);
   app.register(notificationsRoutes);
+  app.register(alertRulesRoutes);
   app.register(deadLettersRoutes);
   app.register(txSimulationRoutes);
   await app.register(graphqlRoutes);

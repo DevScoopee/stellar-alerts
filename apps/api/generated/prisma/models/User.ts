@@ -478,6 +478,20 @@ export type UserUpdateOneRequiredWithoutAlertRulesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAlertRulesInput, Prisma.UserUpdateWithoutAlertRulesInput>, Prisma.UserUncheckedUpdateWithoutAlertRulesInput>
 }
 
+export type UserCreateNestedOneWithoutTelegramSyncCodesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTelegramSyncCodesInput, Prisma.UserUncheckedCreateWithoutTelegramSyncCodesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTelegramSyncCodesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTelegramSyncCodesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTelegramSyncCodesInput, Prisma.UserUncheckedCreateWithoutTelegramSyncCodesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTelegramSyncCodesInput
+  upsert?: Prisma.UserUpsertWithoutTelegramSyncCodesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTelegramSyncCodesInput, Prisma.UserUpdateWithoutTelegramSyncCodesInput>, Prisma.UserUncheckedUpdateWithoutTelegramSyncCodesInput>
+}
+
 export type UserCreateNestedOneWithoutWebhooksInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutWebhooksInput, Prisma.UserUncheckedCreateWithoutWebhooksInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutWebhooksInput

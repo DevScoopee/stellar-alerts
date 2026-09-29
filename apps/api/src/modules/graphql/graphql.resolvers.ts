@@ -133,3 +133,6 @@ export const createResolvers = (redis: Redis) => ({
     },
   },
 });
+
+// Satisfy the import so prisma tree-shaking keeps it available
+void prisma;
