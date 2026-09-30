@@ -55,6 +55,10 @@ export const openApiComponentSchemas = {
   ListSandboxReplaysQuery: z.toJSONSchema(listSandboxReplaysQuerySchema),
   AnalyzeTransactionInput: z.toJSONSchema(analyzeTransactionSchema),
   ErrorResponse: z.toJSONSchema(errorResponseSchema),
+  CreateExportInput: z.toJSONSchema(createExportSchema),
+  ExportIdParams: z.toJSONSchema(exportIdSchema),
+  ListExportsQuery: z.toJSONSchema(listExportsQuerySchema),
+  DownloadExportQuery: z.toJSONSchema(downloadExportQuerySchema),
 };
 
 export const openApiOptions = {

@@ -38,8 +38,11 @@ describe('OpenAPI schema sync & type generator (issue #162)', () => {
       'DIDChallengeInput',
       'DIDVerifyInput',
       'DeadLetterIdParams',
+      'DownloadExportQuery',
       'ErrorResponse',
+      'ExportIdParams',
       'ListDeadLettersQuery',
+      'ListExportsQuery',
       'ListSandboxReplaysQuery',
       'RequestLinkInput',
       'SandboxReplayIdParams',
@@ -65,6 +68,10 @@ describe('OpenAPI schema sync & type generator (issue #162)', () => {
       'DeadLetterIdParams',
       'ListDeadLettersQuery',
       'SuppressDeadLetterInput',
+      'CreateExportInput',
+      'ExportIdParams',
+      'ListExportsQuery',
+      'DownloadExportQuery',
     ]) {
       expect(source).toContain(schema);
     }
