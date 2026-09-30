@@ -32,6 +32,7 @@ describe('OpenAPI schema sync & type generator (issue #162)', () => {
     expect(document.openapi).toMatch(/^3\./);
     const schemas = (document as any).components.schemas;
     expect(Object.keys(schemas).sort()).toEqual([
+      'AnalyzeTransactionInput',
       'CreateWalletInput',
       'CreateWebhookInput',
       'DIDChallengeInput',
@@ -39,7 +40,10 @@ describe('OpenAPI schema sync & type generator (issue #162)', () => {
       'DeadLetterIdParams',
       'ErrorResponse',
       'ListDeadLettersQuery',
+      'ListSandboxReplaysQuery',
       'RequestLinkInput',
+      'SandboxReplayIdParams',
+      'SandboxReplayInput',
       'SuppressDeadLetterInput',
       'VerifyLinkInput',
     ]);

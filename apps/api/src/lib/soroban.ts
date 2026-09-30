@@ -1308,46 +1308,74 @@ export function parseSorobanDiagnosticError(
   };
 }
 
+/**
+ * Decodes a base64 `ScError` into a `SorobanErrorInfo`.
+ *
+ * `ScError` is a single-value union: `switch()` names the arm and `value()`
+ * carries its payload, rather than exposing one accessor per arm. Protocol 23
+ * folded the old `panic`/`host` arms into the typed `ScErrorCode` arms.
+ *
+ * The payload type depends on the arm, which is the trap here. In this SDK
+ * every arm is declared `ScErrorCode` — an enum instance `{ name, value }` —
+ * EXCEPT `sceContract`, which is a bare number. Reading the payload as a
+ * number therefore yields `0` for every host error, silently reporting them all
+ * as unknown code 0. `readScErrorPayload` normalises the two real shapes.
+ *
+ * The enum's own name is authoritative and is what the message leads with. Note
+ * that `ScErrorCode` uses the small `SCEC_*` numbering (0-9), which is a
+ * different numbering from the 100+ `SOROBAN_HOST_ERROR_CODES` table used for
+ * string-form host errors, so the two are deliberately not cross-mapped here.
+ */
 export function decodeSorobanErrorFromXdr(xdrBase64: string): SorobanErrorInfo | null {
   try {
     const xdr = StellarSdk.xdr.ScError.fromXDR(Buffer.from(xdrBase64, 'base64'));
-    
-    switch (xdr.switch()) {
-      case StellarSdk.xdr.ScErrorType.sceContract(): {
-        const contractError = xdr.contract();
-        return {
-          type: 'custom_error',
-          code: contractError.value(),
-          message: `Custom contract error ${contractError.value()}`,
-          details: `ScError(Contract, ${contractError.value()})`,
-        };
-      }
-      case StellarSdk.xdr.ScErrorType.scePanic(): {
-        const panic = xdr.panic();
-        return {
-          type: 'panic',
-          code: panic.value(),
-          message: parsePanicCode(panic.value()),
-          details: `ScError(Panic, ${panic.value()})`,
-        };
-      }
-      case StellarSdk.xdr.ScErrorType.sceHostError(): {
-        const hostError = xdr.hostError();
-        return {
-          type: 'host_error',
-          code: hostError.value(),
-          message: parseHostErrorCode(hostError.value()),
-          details: `ScError(HostError, ${hostError.value()})`,
-        };
-      }
-      default:
-        return {
-          type: 'invocation_error',
-          message: 'Unknown Soroban error type',
-          details: xdr.toXDR('base64'),
-        };
+
+    const armName = (xdr.switch() as { name?: string } | undefined)?.name;
+    const payload = readScErrorPayload(xdr.value());
+
+    if (armName === 'sceContract') {
+      const code = payload.code ?? 0;
+      return {
+        type: 'custom_error',
+        code,
+        message: `Custom contract error ${code}`,
+        details: `ScError(Contract, ${code})`,
+      };
     }
+
+    const label = payload.name ?? armName ?? 'Unknown';
+    return {
+      type: 'host_error',
+      ...(payload.code === undefined ? {} : { code: payload.code }),
+      message: payload.code === undefined ? label : `${label} (code ${payload.code})`,
+      details: `ScError(${armName ?? 'Unknown'}, ${payload.raw})`,
+    };
   } catch {
     return null;
   }
+}
+
+/**
+ * Normalises an `ScError` arm payload to a numeric code and a readable name.
+ *
+ * Handles the two shapes this SDK actually produces: a bare number
+ * (`sceContract`) and an XDR enum instance (`ScErrorCode`, whose `.name` and
+ * `.value` are the readable form). Anything else is reported by name alone
+ * rather than being forced into a misleading numeric code.
+ */
+function readScErrorPayload(raw: unknown): { code?: number; name?: string; raw: string } {
+  if (typeof raw === 'number') {
+    return { code: raw, raw: String(raw) };
+  }
+  if (raw && typeof raw === 'object') {
+    const enumLike = raw as { name?: unknown; value?: unknown };
+    if (typeof enumLike.value === 'number') {
+      return {
+        code: enumLike.value,
+        name: typeof enumLike.name === 'string' ? enumLike.name : undefined,
+        raw: String(enumLike.value),
+      };
+    }
+  }
+  return { raw: String(raw) };
 }

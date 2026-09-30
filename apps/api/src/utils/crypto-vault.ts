@@ -34,6 +34,28 @@ export class CryptoVault {
     return crypto.createHash('sha256').update(safeKey).digest();
   }
 
+  /**
+   * Registers a derived key under a version label.
+   *
+   * Used by `MasterKeyRotationManager` to make a new master key decryptable
+   * alongside the retired ones before any re-encryption happens. Exposed
+   * rather than written to the private map directly so the key-derivation
+   * contract stays owned by the vault.
+   */
+  addKeyVersion(version: string, key: string): void {
+    this.keys.set(version, this.deriveKey(key));
+  }
+
+  /** The version new ciphertext is written under. */
+  get activeVersion(): string {
+    return this.currentVersion;
+  }
+
+  /** Version labels the vault can currently decrypt. */
+  get knownVersions(): string[] {
+    return [...this.keys.keys()];
+  }
+
   encrypt(plaintext: string): string {
     const iv = crypto.randomBytes(12);
     const cipher = crypto.createCipheriv('aes-256-gcm', this.currentKey, iv);
@@ -143,9 +165,9 @@ export class MasterKeyRotationManager {
     };
 
     try {
-      // Add new key to CryptoVault
-      const newKeyBuffer = this.deriveKey(newKey);
-      cryptoVault.keys.set(newVersion, newKeyBuffer);
+      // Make the new key decryptable before anything is re-encrypted, so a
+      // mid-rotation failure leaves old ciphertext readable.
+      cryptoVault.addKeyVersion(newVersion, newKey);
 
       // Re-encrypt all sensitive data
       const webhookRotationResult = await this.rotateWebhookSecrets(newVersion, batchSize, dryRun);

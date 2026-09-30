@@ -1,6 +1,8 @@
-import { gql } from 'graphql';
+// `gql` was removed from the `graphql` root export in 16.14; `parse` is the
+// supported way to turn an SDL template literal into a DocumentNode.
+import { parse } from 'graphql';
 
-export const typeDefs = gql`
+export const typeDefs = parse(`
   type Payment {
     id: String!
     walletId: String!
@@ -53,4 +55,4 @@ export const typeDefs = gql`
   type Query {
     health: String
   }
-`;
+`);

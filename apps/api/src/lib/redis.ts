@@ -193,6 +193,18 @@ function createClient(): Redis {
 export const redis = createClient();
 
 /**
+ * Accessor for the shared Redis client.
+ *
+ * Consumers that need the raw client rather than the degraded-safe helpers
+ * above (GraphQL subscriptions, the gRPC server) take it through this function
+ * instead of building a second connection, so every caller shares the one
+ * client and its lifecycle, retry and degradation handlers.
+ */
+export function getRedisClient(): Redis {
+  return redis;
+}
+
+/**
  * Gets current Redis lifecycle status.
  */
 export function getRedisStatus(): RedisLifecycleStatus {
