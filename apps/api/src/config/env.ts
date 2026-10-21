@@ -18,6 +18,7 @@ const envSchema = z.object({
   PORT: z.string().optional().default("3001"),
   // Comma-separated browser origins allowed to send cookie-authenticated mutations.
   CSRF_ALLOWED_ORIGINS: z.string().optional().default("http://localhost:3000"),
+  APP_URL: z.string().optional().default("http://localhost:3000"),
   MASTER_ENCRYPTION_KEY: z.string().min(32).describe('Master key for encrypting webhook secrets (AES-256-GCM)'),
   MASTER_ENCRYPTION_KEY_VERSION: z.string().optional().default("1"),
   MASTER_ENCRYPTION_OLD_KEYS: z.string().optional().default("{}"),
@@ -136,6 +137,7 @@ const defaultEnvFallback: Env = {
   REDIS_SENTINEL_PASSWORD: undefined,
   REDIS_PASSWORD: undefined,
   PORT: "3001",
+  APP_URL: "http://localhost:3000",
   MASTER_ENCRYPTION_KEY: "0123456789abcdef0123456789abcdef",
   MASTER_ENCRYPTION_KEY_VERSION: "1",
   MASTER_ENCRYPTION_OLD_KEYS: "{}",
@@ -166,6 +168,7 @@ const parseEnv = (): Env => {
     JWT_SECRET: process.env.JWT_SECRET || (process.env.NODE_ENV === 'test' || process.env.VITEST ? "dummy-jwt-secret-key-12345" : undefined),
     SLACK_SIGNING_SECRET: process.env.SLACK_SIGNING_SECRET || (process.env.NODE_ENV === 'test' || process.env.VITEST ? "test-slack-signing-secret" : undefined),
     REDIS_URL: process.env.REDIS_URL || (process.env.NODE_ENV === 'test' || process.env.VITEST ? "redis://localhost:6379" : undefined),
+    APP_URL: process.env.APP_URL || "http://localhost:3000",
     MASTER_ENCRYPTION_KEY: process.env.MASTER_ENCRYPTION_KEY || (process.env.NODE_ENV === 'test' || process.env.VITEST ? "0123456789abcdef0123456789abcdef" : undefined),
     MASTER_ENCRYPTION_KEY_VERSION: process.env.MASTER_ENCRYPTION_KEY_VERSION || "1",
     MASTER_ENCRYPTION_OLD_KEYS: process.env.MASTER_ENCRYPTION_OLD_KEYS || "{}",

@@ -57,7 +57,25 @@ export const buildApp = async () => {
   });
 
   await app.register(cors, {
-    origin: true // Allow all origins for dev, or specify 'http://localhost:3000'
+    origin: (origin, cb) => {
+      const allowedOrigins = (process.env.APP_URL || env.APP_URL || 'http://localhost:3000')
+        .split(',')
+        .map((o) => o.trim().replace(/\/$/, ''))
+        .filter(Boolean);
+
+      // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+      if (!origin) {
+        cb(null, true);
+        return;
+      }
+      const normalized = origin.replace(/\/$/, '');
+      if (allowedOrigins.includes(normalized)) {
+        cb(null, true);
+        return;
+      }
+      cb(null, false);
+    },
+    credentials: true,
   });
 
   // Issue #567: correlation IDs — attach x-request-id to every request's
