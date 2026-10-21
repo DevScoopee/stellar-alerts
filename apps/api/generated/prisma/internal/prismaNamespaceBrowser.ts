@@ -55,6 +55,7 @@ export const ModelName = {
   Wallet: 'Wallet',
   IngestionCursor: 'IngestionCursor',
   Payment: 'Payment',
+  PaymentArchive: 'PaymentArchive',
   OutboxEvent: 'OutboxEvent',
   NotificationPreference: 'NotificationPreference',
   DeliveryLog: 'DeliveryLog',
@@ -127,6 +128,7 @@ export const WalletScalarFieldEnum = {
   label: 'label',
   tags: 'tags',
   metadata: 'metadata',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt'
 } as const
 
@@ -164,6 +166,23 @@ export const PaymentScalarFieldEnum = {
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const PaymentArchiveScalarFieldEnum = {
+  id: 'id',
+  walletId: 'walletId',
+  txHash: 'txHash',
+  fromAddress: 'fromAddress',
+  amount: 'amount',
+  asset: 'asset',
+  assetIssuer: 'assetIssuer',
+  memo: 'memo',
+  receivedAt: 'receivedAt',
+  createdAt: 'createdAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type PaymentArchiveScalarFieldEnum = (typeof PaymentArchiveScalarFieldEnum)[keyof typeof PaymentArchiveScalarFieldEnum]
 
 
 export const OutboxEventScalarFieldEnum = {
@@ -217,6 +236,7 @@ export const DeliveryLogScalarFieldEnum = {
   status: 'status',
   error: 'error',
   attempt: 'attempt',
+  durationMs: 'durationMs',
   createdAt: 'createdAt'
 } as const
 
@@ -315,6 +335,11 @@ export const WebhookScalarFieldEnum = {
   secretIv: 'secretIv',
   secretAuthTag: 'secretAuthTag',
   keyVersion: 'keyVersion',
+  previousSecretCiphertext: 'previousSecretCiphertext',
+  previousSecretIv: 'previousSecretIv',
+  previousSecretAuthTag: 'previousSecretAuthTag',
+  previousKeyVersion: 'previousKeyVersion',
+  previousSecretExpiresAt: 'previousSecretExpiresAt',
   payloadTemplate: 'payloadTemplate',
   isActive: 'isActive',
   createdAt: 'createdAt'
@@ -328,6 +353,7 @@ export const WebhookLogScalarFieldEnum = {
   webhookId: 'webhookId',
   statusCode: 'statusCode',
   responseBody: 'responseBody',
+  durationMs: 'durationMs',
   error: 'error',
   sentAt: 'sentAt',
   createdAt: 'createdAt'

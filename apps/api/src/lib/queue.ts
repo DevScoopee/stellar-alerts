@@ -4,10 +4,9 @@ import { env } from '../config/env';
 import { fetchWithTimeout, withDeadline } from './external-request';
 import { workerFairnessManager } from './rate-budget';
 import { registerRedisCleanupTask, redisCache } from './redis';
-import { cryptoVault } from '../utils/crypto-vault';
 import { applyWebhookPayloadTemplate } from '../utils/payload-template';
 import { adaptiveWebhookRateLimiter, waitForAdaptiveBackoff } from '../utils/rate-limiter';
-import { buildWebhookSignatureHeaders } from '../utils/webhook-signer';
+import { webhooksService } from '../modules/webhooks/webhooks.service';
 import { dispatchWhatsAppAlert, WhatsAppInvalidNumberError } from '../utils/whatsapp';
 import { prisma } from './prisma';
 import { createLogger } from './logger';
@@ -24,21 +23,6 @@ import { dispatchSlackAlert, isValidSlackWebhookUrl } from '../utils/slack';
 import { dispatchPushNotification, PushNotificationData } from '../utils/push-protocol';
 import { classifyWorkerError, getWorkerMaxAttempts, PermanentWorkerError } from './worker-retry-policy';
 import { QueueLaneManager, QueueLane, resolveLaneForAlert } from './queue-lanes';
-
-function decryptWebhookSecret(webhook: {
-  keyVersion: number;
-  secretIv: string;
-  secretAuthTag: string;
-  secretCiphertext: string;
-}): string {
-  const encrypted = [
-    String(webhook.keyVersion),
-    webhook.secretIv,
-    webhook.secretAuthTag,
-    webhook.secretCiphertext,
-  ].join(':');
-  return cryptoVault.decrypt(encrypted);
-}
 
 const queueLog = createLogger({ module: 'Queue' });
 
@@ -350,8 +334,14 @@ export async function dispatchWebhookAndLog(
     }
 
     const payloadString = templateResult.body;
-    const webhookSecret = decryptWebhookSecret(webhook);
-    const signatureHeaders = buildWebhookSignatureHeaders(payloadString, webhookSecret);
+    // Dual-signature headers (#721): during an active rotation grace period
+    // this attaches both the new secret's signature and the previous
+    // secret's, so subscribers who haven't redeployed the rotated secret
+    // yet still verify successfully until the grace window closes.
+    const { headers: signatureHeaders } = webhooksService.buildDualSignatureHeaders(
+      webhook,
+      payloadString,
+    );
 
     const breaker = await getOrCreateCircuitBreaker(webhookId);
     const dispatchMeta: WebhookDispatchMeta = { webhookId, traceparent };
