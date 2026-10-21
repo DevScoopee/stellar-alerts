@@ -38,6 +38,11 @@ export type IngestionCursor = Prisma.IngestionCursorModel
  */
 export type Payment = Prisma.PaymentModel
 /**
+ * Model PaymentArchive
+ * 
+ */
+export type PaymentArchive = Prisma.PaymentArchiveModel
+/**
  * Model OutboxEvent
  * 
  */

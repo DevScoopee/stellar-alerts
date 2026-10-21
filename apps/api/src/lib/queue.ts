@@ -17,6 +17,7 @@ import { instrumentedWebhookFetch } from './webhook-telemetry';
 import { persistDeadLetter } from './dead-letter';
 import { ssrfSafeFetch, validateUrlForSsrf } from '../utils/ssrf';
 import { decryptPersonalField } from '../utils/privacy';
+import { parseStoredEmailTemplate } from '../utils/email-template';
 import { emailService } from '../services/email.service';
 import { buildTelegramPaymentCard, dispatchTelegramAlert } from '../utils/telegram-dispatcher';
 import { dispatchDiscordAlert } from '../utils/discord';
@@ -888,6 +889,9 @@ export async function processAlertDispatch(data: AlertJobData) {
               assetIssuer: data.assetIssuer,
               fromAddress: data.fromAddress,
               receivedAt: data.receivedAt,
+              // Custom receipt branding saved from the template builder (#572).
+              // Malformed/legacy JSON falls back to the default template.
+              branding: parseStoredEmailTemplate(wallet?.user?.notifyPrefs?.emailTemplate),
             }
           );
         }
