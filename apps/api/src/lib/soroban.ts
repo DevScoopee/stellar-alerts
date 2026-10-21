@@ -1565,3 +1565,141 @@ export async function formatSacAmountWithDiscovery(
     metadata,
   };
 }
+
+// ── Contract Upgrade & Admin State Detection (#649) ─────────────────────────
+
+export interface ContractUpgradeEvent {
+  contractId: string;
+  oldWasmHash: string;
+  newWasmHash: string;
+  ledgerSeq: number;
+  txHash?: string;
+}
+
+export interface AdminStateChangeEvent {
+  contractId: string;
+  oldAdmin: string;
+  newAdmin: string;
+  ledgerSeq: number;
+  txHash?: string;
+}
+
+/**
+ * Fetches the current WASM hash for a Soroban contract instance.
+ */
+export async function getContractWasmHash(
+  contractId: string,
+  options: { timeoutMs?: number; signal?: AbortSignal } = {},
+): Promise<Buffer | null> {
+  const timeoutMs = options.timeoutMs ?? env.SOROBAN_RPC_TIMEOUT_MS;
+  try {
+    const response: any = await withDeadline(
+      () => sorobanServer.getLedgerEntries([getContractInstanceLedgerKey(contractId)]),
+      timeoutMs,
+      options.signal,
+      'Soroban RPC getLedgerEntries',
+    );
+    const entries = response.entries || [];
+    if (entries.length === 0) return null;
+
+    const entry = entries[0];
+    const ledgerEntryXdr = entry.val || entry.xdr;
+    if (!ledgerEntryXdr) return null;
+
+    const ledgerEntryData = StellarSdk.xdr.LedgerEntryData.fromXDR(
+      Buffer.from(ledgerEntryXdr, 'base64'),
+    );
+    return getWasmHashFromContractInstance(ledgerEntryData);
+  } catch (error: any) {
+    console.error(
+      `[SorobanRPC] Error fetching WASM hash for ${contractId}:`,
+      error.message,
+    );
+    return null;
+  }
+}
+
+/**
+ * Extracts the admin address from a contract instance LedgerEntryData.
+ * Returns null if the contract has no admin or if parsing fails.
+ * Note: Admin storage keys vary by contract implementation; this is a simplified
+ * placeholder that returns null. Full implementation would need to iterate
+ * through contract storage entries looking for admin-related keys.
+ */
+export function getAdminFromContractInstance(val: StellarSdk.xdr.LedgerEntryData): string | null {
+  // Admin detection requires parsing contract-specific storage layouts
+  // which varies between different contract implementations.
+  // For now, return null to indicate admin tracking is not available.
+  return null;
+}
+
+/**
+ * Fetches the current admin address for a Soroban contract instance.
+ */
+export async function getContractAdmin(
+  contractId: string,
+  options: { timeoutMs?: number; signal?: AbortSignal } = {},
+): Promise<string | null> {
+  const timeoutMs = options.timeoutMs ?? env.SOROBAN_RPC_TIMEOUT_MS;
+  try {
+    const response: any = await withDeadline(
+      () => sorobanServer.getLedgerEntries([getContractInstanceLedgerKey(contractId)]),
+      timeoutMs,
+      options.signal,
+      'Soroban RPC getLedgerEntries',
+    );
+    const entries = response.entries || [];
+    if (entries.length === 0) return null;
+
+    const entry = entries[0];
+    const ledgerEntryXdr = entry.val || entry.xdr;
+    if (!ledgerEntryXdr) return null;
+
+    const ledgerEntryData = StellarSdk.xdr.LedgerEntryData.fromXDR(
+      Buffer.from(ledgerEntryXdr, 'base64'),
+    );
+    return getAdminFromContractInstance(ledgerEntryData);
+  } catch (error: any) {
+    console.error(
+      `[SorobanRPC] Error fetching admin for ${contractId}:`,
+      error.message,
+    );
+    return null;
+  }
+}
+
+/**
+ * Detects a contract WASM upgrade by comparing current and previous hashes.
+ */
+export function detectContractUpgrade(
+  oldHash: Buffer | null,
+  newHash: Buffer | null,
+): ContractUpgradeEvent | null {
+  if (!oldHash || !newHash) return null;
+  if (oldHash.equals(newHash)) return null;
+
+  return {
+    contractId: '', // Set by caller
+    oldWasmHash: oldHash.toString('hex'),
+    newWasmHash: newHash.toString('hex'),
+    ledgerSeq: 0, // Set by caller
+  };
+}
+
+/**
+ * Detects an admin state change by comparing current and previous admin addresses.
+ */
+export function detectAdminChange(
+  oldAdmin: string | null,
+  newAdmin: string | null,
+): AdminStateChangeEvent | null {
+  if (oldAdmin === newAdmin) return null;
+  if (!oldAdmin && !newAdmin) return null;
+
+  return {
+    contractId: '', // Set by caller
+    oldAdmin: oldAdmin || 'none',
+    newAdmin: newAdmin || 'none',
+    ledgerSeq: 0, // Set by caller
+  };
+}
