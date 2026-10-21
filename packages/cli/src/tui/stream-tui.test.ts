@@ -3,7 +3,7 @@ import {
   streamTuiReducer,
   type StreamTuiState,
   type StreamTuiAction,
-} from './stream-tui.js';
+} from './stream-tui-state.js';
 import { PaymentDTO } from '../lib/types.js';
 
 describe('streamTuiReducer (#645)', () => {
@@ -51,11 +51,14 @@ describe('streamTuiReducer (#645)', () => {
     });
 
     it('limits payments to last 50', () => {
+      // The reducer keeps the newest payment first and drops the oldest once
+      // more than 50 are collected, so the fixture mirrors that order:
+      // payment-50 (newest) ... payment-1 (oldest).
       const stateWithManyPayments: StreamTuiState = {
         ...initialState,
         payments: Array.from({ length: 50 }, (_, i) => ({
           ...mockPayment,
-          id: `payment-${i}`,
+          id: `payment-${50 - i}`,
         })),
         totalReceived: 50,
       };
@@ -65,7 +68,8 @@ describe('streamTuiReducer (#645)', () => {
 
       expect(newState.payments).toHaveLength(50);
       expect(newState.payments[0].id).toBe('payment-51');
-      expect(newState.payments[49].id).toBe('payment-1');
+      expect(newState.payments[1].id).toBe('payment-50');
+      expect(newState.payments[49].id).toBe('payment-2');
     });
 
     it('updates lastUpdate timestamp', () => {
