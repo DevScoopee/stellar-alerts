@@ -1,11 +1,23 @@
 #!/usr/bin/env tsx
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, createElement } from 'react';
 import { render, Text, Box, Newline, useInput, useApp } from 'ink';
-import Table from 'ink-table';
+import InkTable from 'ink-table';
+import { pathToFileURL } from 'url';
 import { PaymentDTO } from '../lib/types.js';
+
+/**
+ * ink-table v3 ships a default export at runtime but does not declare it in
+ * its type definitions, so the import cannot be used as a JSX component
+ * without a cast.
+ */
+const Table = InkTable as unknown as React.FC<{
+  data: Array<Record<string, string | number | boolean | null | undefined>>;
+  padding?: number;
+}>;
 
 export interface StreamTuiProps {
   dispatch?: (action: StreamTuiAction) => void;
+  onPayment?: (payment: PaymentDTO) => void;
   onQuit?: () => void;
   initialPaused?: boolean;
 }
@@ -26,8 +38,6 @@ export type StreamTuiAction =
   | { type: 'CLEAR' }
   | { type: 'SET_CONNECTION_STATUS'; payload: 'connected' | 'disconnected' | 'connecting' }
   | { type: 'QUIT' };
-
-export { streamTuiReducer };
 
 export function streamTuiReducer(
   state: StreamTuiState,
@@ -128,7 +138,7 @@ const StreamTui: React.FC<StreamTuiProps> = ({
   // Calculate transaction volume metrics
   const volumeMetrics = useMemo(() => {
     const totalAmount = state.payments.reduce((sum, p) => {
-      const amount = parseFloat(p.amount);
+      const amount = parseFloat(String(p.amount));
       return isNaN(amount) ? sum : sum + amount;
     }, 0);
 
@@ -226,6 +236,10 @@ const StreamTui: React.FC<StreamTuiProps> = ({
 
 export default StreamTui;
 
-if (require.main === module) {
-  render(<StreamTui />);
+const isDirectRun =
+  process.argv[1] !== undefined &&
+  import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (isDirectRun) {
+  render(createElement(StreamTui));
 }
