@@ -300,6 +300,7 @@ const defaultEnvFallback: Env = {
   REDIS_SENTINEL_PASSWORD: undefined,
   REDIS_PASSWORD: undefined,
   PORT: "3001",
+  APP_URL: "http://localhost:3000",
   MASTER_ENCRYPTION_KEY: "0123456789abcdef0123456789abcdef",
   MASTER_ENCRYPTION_KEY_VERSION: "1",
   MASTER_ENCRYPTION_OLD_KEYS: "{}",
