@@ -30,6 +30,44 @@ model User {
   refreshSessions        RefreshSession[]
   telegramSyncCodes      TelegramSyncCode[]
   simulations            TransactionSimulation[]
+  apiKeys                ApiKey[]
+}
+
+// ── Developer API Keys & Granular Bitmask RBAC (#730) ───────────────────────
+//
+// Long-lived developer API keys for automation/bots/microservices, each
+// carrying a permission scope bitmask (see ScopeMatrix in
+// modules/auth/api-key-rbac.ts) instead of all-or-nothing admin access. Only
+// the SHA-256 hash of the raw key is stored (`keyHash`), so a leaked database
+// cannot recover usable keys; the plaintext key is shown exactly once at
+// creation. `scopes` is a plain integer whose set bits encode the granted
+// permission scopes (wallets:read, wallets:write, alerts:write,
+// webhooks:admin), checked in constant time by a single bitwise AND in the
+// rbac middleware before a route handler runs.
+model ApiKey {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Human-readable label the developer chose (e.g. "prod telemetry bot").
+  name       String
+  // SHA-256 hash of the raw API key — the only key material persisted. The
+  // raw key is returned to the caller exactly once on creation.
+  keyHash    String    @unique
+  // Non-secret prefix (e.g. "sk_live_abcd…") shown in listings so a developer
+  // can identify a key without exposing it.
+  keyPrefix  String
+  // Bitmask of granted permission scopes. Each bit corresponds to one entry
+  // in ScopeMatrix; 0 means no scopes (the key can authenticate but do nothing).
+  scopes     Int       @default(0)
+  isActive   Boolean   @default(false)
+  lastUsedAt DateTime?
+  expiresAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([keyHash])
+  @@index([isActive])
 }
 
 model Wallet {
