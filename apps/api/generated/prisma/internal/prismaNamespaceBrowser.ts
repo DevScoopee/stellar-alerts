@@ -336,6 +336,11 @@ export const WebhookScalarFieldEnum = {
   secretIv: 'secretIv',
   secretAuthTag: 'secretAuthTag',
   keyVersion: 'keyVersion',
+  previousSecretCiphertext: 'previousSecretCiphertext',
+  previousSecretIv: 'previousSecretIv',
+  previousSecretAuthTag: 'previousSecretAuthTag',
+  previousKeyVersion: 'previousKeyVersion',
+  previousSecretExpiresAt: 'previousSecretExpiresAt',
   payloadTemplate: 'payloadTemplate',
   isActive: 'isActive',
   createdAt: 'createdAt'

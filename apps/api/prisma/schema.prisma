@@ -291,11 +291,22 @@ model Webhook {
   secretIv          String
   secretAuthTag     String
   keyVersion        Int                      @default(1)
+  // Previous signing secret retained for the dual-verification grace period
+  // after a rotation (#721). Null when no rotation is currently in progress.
+  previousSecretCiphertext String?
+  previousSecretIv         String?
+  previousSecretAuthTag    String?
+  previousKeyVersion       Int?
+  // When the previous secret stops being accepted. Set to now() + grace
+  // period at rotation time; cleared once expired or on the next rotation.
+  previousSecretExpiresAt  DateTime?
   payloadTemplate   String?
   isActive          Boolean                  @default(true)
   createdAt         DateTime                 @default(now())
   logs              WebhookLog[]
   circuitBreaker    WebhookCircuitBreaker?
+
+  @@index([previousSecretExpiresAt])
 }
 
 model WebhookLog {
