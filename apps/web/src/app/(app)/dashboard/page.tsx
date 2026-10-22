@@ -17,11 +17,11 @@ import {
   ActivityHeatmap,
   EmailTemplatePreview,
   SankeyFlowDiagram,
-  type EmailTemplateConfig,
   type PathPaymentFlow,
 } from '@/components/dashboard';
 import { useBatchReader } from '@/lib/hooks/useBatchReader';
 import { getSocket } from '@/lib/socket';
+import { useEmailTemplatePreference } from '@/hooks/useEmailTemplatePreference';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
 
@@ -45,6 +45,10 @@ export default function DashboardPage() {
   // path_payment_* offer chains, so this stays empty until a path-flows feed
   // is available; the Sankey card renders its own empty state meanwhile.
   const [pathPaymentFlows] = useState<PathPaymentFlow[]>([]);
+  const {
+    template: savedEmailTemplate,
+    saveTemplate: saveEmailTemplate,
+  } = useEmailTemplatePreference(session?.accessToken);
 
   const fetchDashboardData = useCallback(async () => {
     if (!session) return;
@@ -151,21 +155,6 @@ export default function DashboardPage() {
     section.querySelector<HTMLInputElement>('#address')?.focus({ preventScroll: true });
   }, []);
 
-  const handleSaveEmailTemplate = async (template: EmailTemplateConfig) => {
-    try {
-      await fetch(`${API_BASE_URL}/notifications/preferences`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: session?.accessToken ? `Bearer ${session.accessToken}` : '',
-        },
-        body: JSON.stringify({ emailTemplate: template }),
-      });
-    } catch (err) {
-      console.error('Failed to save email template preferences:', err);
-    }
-  };
-
   return (
     <div className="min-w-0 space-y-8">
       {/* Live webhook delivery toast (populated over the authenticated WebSocket) */}
@@ -238,7 +227,12 @@ export default function DashboardPage() {
           {
             id: 'email-template-preview',
             label: 'Email Receipt Template',
-            content: <EmailTemplatePreview onSaveTemplate={handleSaveEmailTemplate} />,
+            content: (
+              <EmailTemplatePreview
+                initialTemplate={savedEmailTemplate ?? undefined}
+                onSaveTemplate={saveEmailTemplate}
+              />
+            ),
           },
           {
             id: 'webhook-sandbox',
