@@ -1,75 +1,33 @@
 #!/usr/bin/env tsx
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, createElement } from 'react';
 import { render, Text, Box, Newline, useInput, useApp } from 'ink';
-import Table from 'ink-table';
+import InkTable from 'ink-table';
+import { pathToFileURL } from 'url';
 import { PaymentDTO } from '../lib/types.js';
+import {
+  streamTuiReducer,
+  type StreamTuiAction,
+  type StreamTuiState,
+} from './stream-tui-state.js';
+
+export { streamTuiReducer };
+export type { StreamTuiAction, StreamTuiState };
+
+/**
+ * ink-table v3 ships a default export at runtime but does not declare it in
+ * its type definitions, so the import cannot be used as a JSX component
+ * without a cast.
+ */
+const Table = InkTable as unknown as React.FC<{
+  data: Array<Record<string, string | number | boolean | null | undefined>>;
+  padding?: number;
+}>;
 
 export interface StreamTuiProps {
   dispatch?: (action: StreamTuiAction) => void;
+  onPayment?: (payment: PaymentDTO) => void;
   onQuit?: () => void;
   initialPaused?: boolean;
-}
-
-export interface StreamTuiState {
-  payments: PaymentDTO[];
-  isPaused: boolean;
-  filter: string;
-  totalReceived: number;
-  connectionStatus: 'connected' | 'disconnected' | 'connecting';
-  lastUpdate: string;
-}
-
-export type StreamTuiAction =
-  | { type: 'ADD_PAYMENT'; payload: PaymentDTO }
-  | { type: 'TOGGLE_PAUSE' }
-  | { type: 'SET_FILTER'; payload: string }
-  | { type: 'CLEAR' }
-  | { type: 'SET_CONNECTION_STATUS'; payload: 'connected' | 'disconnected' | 'connecting' }
-  | { type: 'QUIT' };
-
-export { streamTuiReducer };
-
-export function streamTuiReducer(
-  state: StreamTuiState,
-  action: StreamTuiAction,
-): StreamTuiState {
-  switch (action.type) {
-    case 'ADD_PAYMENT':
-      return {
-        ...state,
-        payments: [action.payload, ...state.payments].slice(0, 50),
-        totalReceived: state.totalReceived + 1,
-        lastUpdate: new Date().toISOString(),
-      };
-    case 'TOGGLE_PAUSE':
-      return {
-        ...state,
-        isPaused: !state.isPaused,
-        lastUpdate: new Date().toISOString(),
-      };
-    case 'SET_FILTER':
-      return {
-        ...state,
-        filter: action.payload,
-        lastUpdate: new Date().toISOString(),
-      };
-    case 'CLEAR':
-      return {
-        ...state,
-        payments: [],
-        lastUpdate: new Date().toISOString(),
-      };
-    case 'SET_CONNECTION_STATUS':
-      return {
-        ...state,
-        connectionStatus: action.payload,
-        lastUpdate: new Date().toISOString(),
-      };
-    case 'QUIT':
-      return state;
-    default:
-      return state;
-  }
 }
 
 const StreamTui: React.FC<StreamTuiProps> = ({
@@ -128,7 +86,7 @@ const StreamTui: React.FC<StreamTuiProps> = ({
   // Calculate transaction volume metrics
   const volumeMetrics = useMemo(() => {
     const totalAmount = state.payments.reduce((sum, p) => {
-      const amount = parseFloat(p.amount);
+      const amount = parseFloat(String(p.amount));
       return isNaN(amount) ? sum : sum + amount;
     }, 0);
 
@@ -226,6 +184,10 @@ const StreamTui: React.FC<StreamTuiProps> = ({
 
 export default StreamTui;
 
-if (require.main === module) {
-  render(<StreamTui />);
+const isDirectRun =
+  process.argv[1] !== undefined &&
+  import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (isDirectRun) {
+  render(createElement(StreamTui));
 }
