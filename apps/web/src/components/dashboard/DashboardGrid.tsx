@@ -128,7 +128,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
           <button
             type="button"
             onClick={resetLayout}
-            className="px-4 py-2 text-xs font-semibold text-cyan-400 hover:text-cyan-300 bg-cyan-950/40 border border-cyan-800/60 rounded-lg transition-colors"
+            className="px-4 py-2 text-xs font-semibold text-cyan-400 hover:text-cyan-300 bg-cyan-950/40 border border-cyan-800/60 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/70"
           >
             Reset to Default Layout
           </button>
@@ -195,7 +195,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg transition-colors"
+                className="text-slate-400 hover:text-white p-1 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/70"
                 aria-label="Close layout customization modal"
               >
                 ✕
@@ -234,7 +234,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
                         onClick={() => reorderWidgets(index, index - 1)}
                         disabled={index === 0}
                         data-testid={`widget-move-up-${item.id}`}
-                        className="p-1.5 text-xs text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded hover:bg-slate-700/50 transition-colors"
+                        className="p-1.5 text-xs text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded hover:bg-slate-700/50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/70"
                         title="Move Up"
                         aria-label={`Move ${item.label} up`}
                       >
@@ -245,7 +245,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
                         onClick={() => reorderWidgets(index, index + 1)}
                         disabled={index === orderedAllItems.length - 1}
                         data-testid={`widget-move-down-${item.id}`}
-                        className="p-1.5 text-xs text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded hover:bg-slate-700/50 transition-colors"
+                        className="p-1.5 text-xs text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed rounded hover:bg-slate-700/50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/70"
                         title="Move Down"
                         aria-label={`Move ${item.label} down`}
                       >
@@ -263,7 +263,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
                 type="button"
                 onClick={resetLayout}
                 data-testid="reset-layout-btn"
-                className="px-3 py-1.5 text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-950/30 rounded-lg border border-rose-900/40 transition-colors"
+                className="px-3 py-1.5 text-xs font-semibold text-rose-400 hover:text-rose-300 hover:bg-rose-950/30 rounded-lg border border-rose-900/40 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/70"
               >
                 Reset to Default
               </button>
@@ -271,7 +271,7 @@ export const DashboardGrid: React.FC<DashboardGridProps> = ({
                 type="button"
                 onClick={() => setIsModalOpen(false)}
                 data-testid="close-modal-btn"
-                className="px-4 py-1.5 text-xs font-semibold text-slate-900 bg-cyan-400 hover:bg-cyan-300 rounded-lg shadow-sm transition-colors"
+                className="px-4 py-1.5 text-xs font-semibold text-slate-900 bg-cyan-400 hover:bg-cyan-300 rounded-lg shadow-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/70"
               >
                 Done
               </button>
