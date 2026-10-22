@@ -223,7 +223,8 @@ export const NotificationPreferenceScalarFieldEnum = {
   minAmount: 'minAmount',
   enabledChannels: 'enabledChannels',
   language: 'language',
-  filterRules: 'filterRules'
+  filterRules: 'filterRules',
+  emailTemplate: 'emailTemplate'
 } as const
 
 export type NotificationPreferenceScalarFieldEnum = (typeof NotificationPreferenceScalarFieldEnum)[keyof typeof NotificationPreferenceScalarFieldEnum]

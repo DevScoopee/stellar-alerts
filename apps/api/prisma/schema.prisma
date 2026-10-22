@@ -152,6 +152,9 @@ model NotificationPreference {
   enabledChannels   String[] @default([])
   language          String  @default("EN")
   filterRules       Json?   // Stores filter rule group as JSON
+  // Merchant-customized payment receipt branding (#572), see
+  // utils/email-template.ts for the normalized shape.
+  emailTemplate     Json?
 }
 
 model DeliveryLog {

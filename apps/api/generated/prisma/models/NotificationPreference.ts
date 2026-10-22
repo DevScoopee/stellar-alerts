@@ -92,6 +92,7 @@ export type NotificationPreferenceCountAggregateOutputType = {
   enabledChannels: number
   language: number
   filterRules: number
+  emailTemplate: number
   _all: number
 }
 
@@ -162,6 +163,7 @@ export type NotificationPreferenceCountAggregateInputType = {
   enabledChannels?: true
   language?: true
   filterRules?: true
+  emailTemplate?: true
   _all?: true
 }
 
@@ -271,6 +273,7 @@ export type NotificationPreferenceGroupByOutputType = {
   enabledChannels: string[]
   language: string
   filterRules: runtime.JsonValue | null
+  emailTemplate: runtime.JsonValue | null
   _count: NotificationPreferenceCountAggregateOutputType | null
   _avg: NotificationPreferenceAvgAggregateOutputType | null
   _sum: NotificationPreferenceSumAggregateOutputType | null
@@ -316,6 +319,7 @@ export type NotificationPreferenceWhereInput = {
   enabledChannels?: Prisma.StringNullableListFilter<"NotificationPreference">
   language?: Prisma.StringFilter<"NotificationPreference"> | string
   filterRules?: Prisma.JsonNullableFilter<"NotificationPreference">
+  emailTemplate?: Prisma.JsonNullableFilter<"NotificationPreference">
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -339,6 +343,7 @@ export type NotificationPreferenceOrderByWithRelationInput = {
   enabledChannels?: Prisma.SortOrder
   language?: Prisma.SortOrder
   filterRules?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailTemplate?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -365,6 +370,7 @@ export type NotificationPreferenceWhereUniqueInput = Prisma.AtLeast<{
   enabledChannels?: Prisma.StringNullableListFilter<"NotificationPreference">
   language?: Prisma.StringFilter<"NotificationPreference"> | string
   filterRules?: Prisma.JsonNullableFilter<"NotificationPreference">
+  emailTemplate?: Prisma.JsonNullableFilter<"NotificationPreference">
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId">
 
@@ -388,6 +394,7 @@ export type NotificationPreferenceOrderByWithAggregationInput = {
   enabledChannels?: Prisma.SortOrder
   language?: Prisma.SortOrder
   filterRules?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailTemplate?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.NotificationPreferenceCountOrderByAggregateInput
   _avg?: Prisma.NotificationPreferenceAvgOrderByAggregateInput
   _max?: Prisma.NotificationPreferenceMaxOrderByAggregateInput
@@ -418,6 +425,7 @@ export type NotificationPreferenceScalarWhereWithAggregatesInput = {
   enabledChannels?: Prisma.StringNullableListFilter<"NotificationPreference">
   language?: Prisma.StringWithAggregatesFilter<"NotificationPreference"> | string
   filterRules?: Prisma.JsonNullableWithAggregatesFilter<"NotificationPreference">
+  emailTemplate?: Prisma.JsonNullableWithAggregatesFilter<"NotificationPreference">
 }
 
 export type NotificationPreferenceCreateInput = {
@@ -439,6 +447,7 @@ export type NotificationPreferenceCreateInput = {
   enabledChannels?: Prisma.NotificationPreferenceCreateenabledChannelsInput | string[]
   language?: string
   filterRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  emailTemplate?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   user: Prisma.UserCreateNestedOneWithoutNotifyPrefsInput
 }
 
@@ -462,6 +471,7 @@ export type NotificationPreferenceUncheckedCreateInput = {
   enabledChannels?: Prisma.NotificationPreferenceCreateenabledChannelsInput | string[]
   language?: string
   filterRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  emailTemplate?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type NotificationPreferenceUpdateInput = {
@@ -483,6 +493,7 @@ export type NotificationPreferenceUpdateInput = {
   enabledChannels?: Prisma.NotificationPreferenceUpdateenabledChannelsInput | string[]
   language?: Prisma.StringFieldUpdateOperationsInput | string
   filterRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  emailTemplate?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   user?: Prisma.UserUpdateOneRequiredWithoutNotifyPrefsNestedInput
 }
 
@@ -506,6 +517,7 @@ export type NotificationPreferenceUncheckedUpdateInput = {
   enabledChannels?: Prisma.NotificationPreferenceUpdateenabledChannelsInput | string[]
   language?: Prisma.StringFieldUpdateOperationsInput | string
   filterRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  emailTemplate?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type NotificationPreferenceCreateManyInput = {
@@ -528,6 +540,7 @@ export type NotificationPreferenceCreateManyInput = {
   enabledChannels?: Prisma.NotificationPreferenceCreateenabledChannelsInput | string[]
   language?: string
   filterRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  emailTemplate?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type NotificationPreferenceUpdateManyMutationInput = {
@@ -549,6 +562,7 @@ export type NotificationPreferenceUpdateManyMutationInput = {
   enabledChannels?: Prisma.NotificationPreferenceUpdateenabledChannelsInput | string[]
   language?: Prisma.StringFieldUpdateOperationsInput | string
   filterRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  emailTemplate?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type NotificationPreferenceUncheckedUpdateManyInput = {
@@ -571,6 +585,7 @@ export type NotificationPreferenceUncheckedUpdateManyInput = {
   enabledChannels?: Prisma.NotificationPreferenceUpdateenabledChannelsInput | string[]
   language?: Prisma.StringFieldUpdateOperationsInput | string
   filterRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  emailTemplate?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type NotificationPreferenceNullableScalarRelationFilter = {
@@ -598,6 +613,7 @@ export type NotificationPreferenceCountOrderByAggregateInput = {
   enabledChannels?: Prisma.SortOrder
   language?: Prisma.SortOrder
   filterRules?: Prisma.SortOrder
+  emailTemplate?: Prisma.SortOrder
 }
 
 export type NotificationPreferenceAvgOrderByAggregateInput = {
@@ -723,6 +739,7 @@ export type NotificationPreferenceCreateWithoutUserInput = {
   enabledChannels?: Prisma.NotificationPreferenceCreateenabledChannelsInput | string[]
   language?: string
   filterRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  emailTemplate?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type NotificationPreferenceUncheckedCreateWithoutUserInput = {
@@ -744,6 +761,7 @@ export type NotificationPreferenceUncheckedCreateWithoutUserInput = {
   enabledChannels?: Prisma.NotificationPreferenceCreateenabledChannelsInput | string[]
   language?: string
   filterRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  emailTemplate?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type NotificationPreferenceCreateOrConnectWithoutUserInput = {
@@ -781,6 +799,7 @@ export type NotificationPreferenceUpdateWithoutUserInput = {
   enabledChannels?: Prisma.NotificationPreferenceUpdateenabledChannelsInput | string[]
   language?: Prisma.StringFieldUpdateOperationsInput | string
   filterRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  emailTemplate?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type NotificationPreferenceUncheckedUpdateWithoutUserInput = {
@@ -802,6 +821,7 @@ export type NotificationPreferenceUncheckedUpdateWithoutUserInput = {
   enabledChannels?: Prisma.NotificationPreferenceUpdateenabledChannelsInput | string[]
   language?: Prisma.StringFieldUpdateOperationsInput | string
   filterRules?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  emailTemplate?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 
@@ -826,6 +846,7 @@ export type NotificationPreferenceSelect<ExtArgs extends runtime.Types.Extension
   enabledChannels?: boolean
   language?: boolean
   filterRules?: boolean
+  emailTemplate?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["notificationPreference"]>
 
@@ -849,6 +870,7 @@ export type NotificationPreferenceSelectCreateManyAndReturn<ExtArgs extends runt
   enabledChannels?: boolean
   language?: boolean
   filterRules?: boolean
+  emailTemplate?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["notificationPreference"]>
 
@@ -872,6 +894,7 @@ export type NotificationPreferenceSelectUpdateManyAndReturn<ExtArgs extends runt
   enabledChannels?: boolean
   language?: boolean
   filterRules?: boolean
+  emailTemplate?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["notificationPreference"]>
 
@@ -895,9 +918,10 @@ export type NotificationPreferenceSelectScalar = {
   enabledChannels?: boolean
   language?: boolean
   filterRules?: boolean
+  emailTemplate?: boolean
 }
 
-export type NotificationPreferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "telegramChatId" | "telegramEnabled" | "emailEnabled" | "whatsappNumber" | "whatsappEnabled" | "discordWebhookUrl" | "discordEnabled" | "slackWebhookUrl" | "slackEnabled" | "pushChannelAddress" | "pushEnabled" | "receiptPreference" | "assetFilters" | "minAmount" | "enabledChannels" | "language" | "filterRules", ExtArgs["result"]["notificationPreference"]>
+export type NotificationPreferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "telegramChatId" | "telegramEnabled" | "emailEnabled" | "whatsappNumber" | "whatsappEnabled" | "discordWebhookUrl" | "discordEnabled" | "slackWebhookUrl" | "slackEnabled" | "pushChannelAddress" | "pushEnabled" | "receiptPreference" | "assetFilters" | "minAmount" | "enabledChannels" | "language" | "filterRules" | "emailTemplate", ExtArgs["result"]["notificationPreference"]>
 export type NotificationPreferenceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -933,6 +957,7 @@ export type $NotificationPreferencePayload<ExtArgs extends runtime.Types.Extensi
     enabledChannels: string[]
     language: string
     filterRules: runtime.JsonValue | null
+    emailTemplate: runtime.JsonValue | null
   }, ExtArgs["result"]["notificationPreference"]>
   composites: {}
 }
@@ -1376,6 +1401,7 @@ export interface NotificationPreferenceFieldRefs {
   readonly enabledChannels: Prisma.FieldRef<"NotificationPreference", 'String[]'>
   readonly language: Prisma.FieldRef<"NotificationPreference", 'String'>
   readonly filterRules: Prisma.FieldRef<"NotificationPreference", 'Json'>
+  readonly emailTemplate: Prisma.FieldRef<"NotificationPreference", 'Json'>
 }
     
 
