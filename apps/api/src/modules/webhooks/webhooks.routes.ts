@@ -25,6 +25,11 @@ export async function webhooksRoutes(app: FastifyInstance) {
   // diagnostic probe whose whole purpose is to send, so replaying a stored
   // response would make the second press look like it worked when nothing ran.
   app.post('/webhooks/:id/test', webhooksController.testWebhook.bind(webhooksController));
+  // Secret rotation (#721) is also excluded from the idempotency guard: a
+  // retried request must not replay a stale "rotation succeeded" response
+  // for a secret that a later rotation has already superseded, and each
+  // call is meant to mint a fresh secret regardless of recent retries.
+  app.post('/webhooks/:id/rotate-secret', webhooksController.rotateSecret.bind(webhooksController));
   // Same reasoning as /test: an outbound probe must actually run every time.
   app.post('/webhooks/sandbox/replay', webhookSandboxReplayController.replay.bind(webhookSandboxReplayController));
   app.get('/webhooks/:id/logs', webhooksController.getWebhookLogs.bind(webhooksController));

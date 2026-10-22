@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.10.1
- * Query Engine version: d1b3f377ca835d73fd50954a5e22128b9ebdd6b8
+ * Prisma Client JS version: 7.9.0
+ * Query Engine version: e922089b7d7502aff4249d5da3420f6fa55fc6ad
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.10.1",
-  engine: "d1b3f377ca835d73fd50954a5e22128b9ebdd6b8"
+  client: "7.9.0",
+  engine: "e922089b7d7502aff4249d5da3420f6fa55fc6ad"
 }
 
 /**
@@ -401,6 +401,7 @@ export const ModelName = {
   Wallet: 'Wallet',
   IngestionCursor: 'IngestionCursor',
   Payment: 'Payment',
+  PaymentArchive: 'PaymentArchive',
   OutboxEvent: 'OutboxEvent',
   NotificationPreference: 'NotificationPreference',
   DeliveryLog: 'DeliveryLog',
@@ -452,7 +453,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "wallet" | "ingestionCursor" | "payment" | "outboxEvent" | "notificationPreference" | "deliveryLog" | "paymentChecksum" | "dailyChecksumRoot" | "alertRule" | "alertRuleDispatchLog" | "telegramSyncCode" | "whatsAppDeliveryLog" | "webhook" | "webhookLog" | "webhookCircuitBreaker" | "exportJob" | "transactionSimulation" | "sorobanEventSnapshot" | "sorobanStateAudit" | "sorobanContractSubscription" | "sacTokenMintBurnEvent" | "sacTokenSupply" | "multisigTreasury" | "multisigSignerWatcher" | "pendingMultisigTransaction" | "anchorTransactionWatch" | "dexSwapWatch" | "sorobanTopicIndex" | "sorobanTopicIndexCursor" | "dexSwapEvent" | "securityAuditLog" | "notificationDelivery" | "notificationDeliveryAttempt" | "deadLetter" | "webhookSandboxReplay" | "deadLetterAudit" | "mfaRecoveryCode" | "refreshSession" | "refreshTokenHistory"
+    modelProps: "user" | "wallet" | "ingestionCursor" | "payment" | "paymentArchive" | "outboxEvent" | "notificationPreference" | "deliveryLog" | "paymentChecksum" | "dailyChecksumRoot" | "alertRule" | "alertRuleDispatchLog" | "telegramSyncCode" | "whatsAppDeliveryLog" | "webhook" | "webhookLog" | "webhookCircuitBreaker" | "exportJob" | "transactionSimulation" | "sorobanEventSnapshot" | "sorobanStateAudit" | "sorobanContractSubscription" | "sacTokenMintBurnEvent" | "sacTokenSupply" | "multisigTreasury" | "multisigSignerWatcher" | "pendingMultisigTransaction" | "anchorTransactionWatch" | "dexSwapWatch" | "sorobanTopicIndex" | "sorobanTopicIndexCursor" | "dexSwapEvent" | "securityAuditLog" | "notificationDelivery" | "notificationDeliveryAttempt" | "deadLetter" | "webhookSandboxReplay" | "deadLetterAudit" | "mfaRecoveryCode" | "refreshSession" | "refreshTokenHistory"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -749,6 +750,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PaymentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PaymentCountAggregateOutputType> | number
+        }
+      }
+    }
+    PaymentArchive: {
+      payload: Prisma.$PaymentArchivePayload<ExtArgs>
+      fields: Prisma.PaymentArchiveFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentArchiveFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentArchiveFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentArchiveFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentArchiveFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>
+        }
+        findMany: {
+          args: Prisma.PaymentArchiveFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>[]
+        }
+        create: {
+          args: Prisma.PaymentArchiveCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>
+        }
+        createMany: {
+          args: Prisma.PaymentArchiveCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PaymentArchiveCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>[]
+        }
+        delete: {
+          args: Prisma.PaymentArchiveDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>
+        }
+        update: {
+          args: Prisma.PaymentArchiveUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentArchiveDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentArchiveUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PaymentArchiveUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>[]
+        }
+        upsert: {
+          args: Prisma.PaymentArchiveUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentArchiveAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentArchive>
+        }
+        groupBy: {
+          args: Prisma.PaymentArchiveGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentArchiveGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentArchiveCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentArchiveCountAggregateOutputType> | number
         }
       }
     }
@@ -3473,6 +3548,7 @@ export const WalletScalarFieldEnum = {
   label: 'label',
   tags: 'tags',
   metadata: 'metadata',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt'
 } as const
 
@@ -3510,6 +3586,23 @@ export const PaymentScalarFieldEnum = {
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const PaymentArchiveScalarFieldEnum = {
+  id: 'id',
+  walletId: 'walletId',
+  txHash: 'txHash',
+  fromAddress: 'fromAddress',
+  amount: 'amount',
+  asset: 'asset',
+  assetIssuer: 'assetIssuer',
+  memo: 'memo',
+  receivedAt: 'receivedAt',
+  createdAt: 'createdAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type PaymentArchiveScalarFieldEnum = (typeof PaymentArchiveScalarFieldEnum)[keyof typeof PaymentArchiveScalarFieldEnum]
 
 
 export const OutboxEventScalarFieldEnum = {
@@ -3563,6 +3656,7 @@ export const DeliveryLogScalarFieldEnum = {
   status: 'status',
   error: 'error',
   attempt: 'attempt',
+  durationMs: 'durationMs',
   createdAt: 'createdAt'
 } as const
 
@@ -3661,6 +3755,11 @@ export const WebhookScalarFieldEnum = {
   secretIv: 'secretIv',
   secretAuthTag: 'secretAuthTag',
   keyVersion: 'keyVersion',
+  previousSecretCiphertext: 'previousSecretCiphertext',
+  previousSecretIv: 'previousSecretIv',
+  previousSecretAuthTag: 'previousSecretAuthTag',
+  previousKeyVersion: 'previousKeyVersion',
+  previousSecretExpiresAt: 'previousSecretExpiresAt',
   payloadTemplate: 'payloadTemplate',
   isActive: 'isActive',
   createdAt: 'createdAt'
@@ -3674,6 +3773,7 @@ export const WebhookLogScalarFieldEnum = {
   webhookId: 'webhookId',
   statusCode: 'statusCode',
   responseBody: 'responseBody',
+  durationMs: 'durationMs',
   error: 'error',
   sentAt: 'sentAt',
   createdAt: 'createdAt'
@@ -4371,6 +4471,7 @@ export type GlobalOmitConfig = {
   wallet?: Prisma.WalletOmit
   ingestionCursor?: Prisma.IngestionCursorOmit
   payment?: Prisma.PaymentOmit
+  paymentArchive?: Prisma.PaymentArchiveOmit
   outboxEvent?: Prisma.OutboxEventOmit
   notificationPreference?: Prisma.NotificationPreferenceOmit
   deliveryLog?: Prisma.DeliveryLogOmit
