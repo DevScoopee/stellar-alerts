@@ -32,6 +32,9 @@ const envSchema = z.object({
   // Overridable so load-test runs (k6, etc.) can measure real server capacity
   // instead of hitting the rate limiter almost immediately.
   RATE_LIMIT_MAX: z.coerce.number().int().positive().optional().default(100),
+  // Per-dependency deadline for GET /health/deep. Keeps the probe responsive
+  // when Postgres, Redis, or Horizon hangs instead of failing fast.
+  DEEP_HEALTH_TIMEOUT_MS: z.coerce.number().int().positive().optional().default(5000),
   WORKER_MAX_ATTEMPTS: z.coerce
     .number()
     .int()
@@ -297,6 +300,7 @@ const defaultEnvFallback: Env = {
   REDIS_SENTINEL_PASSWORD: undefined,
   REDIS_PASSWORD: undefined,
   PORT: "3001",
+  APP_URL: "http://localhost:3000",
   MASTER_ENCRYPTION_KEY: "0123456789abcdef0123456789abcdef",
   MASTER_ENCRYPTION_KEY_VERSION: "1",
   MASTER_ENCRYPTION_OLD_KEYS: "{}",

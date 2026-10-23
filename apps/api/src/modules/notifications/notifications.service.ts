@@ -6,6 +6,7 @@
  */
 
 import { Prisma } from '../../../generated/prisma/client';
+import type { EmailTemplateDTO } from '@stellar-alerts/shared';
 import { prisma } from '../../lib/prisma';
 import { mfaService } from '../auth/mfa.service';
 import { encryptPersonalField, decryptPersonalField } from '../../utils/privacy';
@@ -58,6 +59,11 @@ export interface NotificationPreferences {
   digestFrequency?: 'daily' | 'weekly' | 'off' | string;
   language?: string;
   filterRules?: any;
+  /**
+   * Custom branded receipt template (#572). Send `null` to reset the user
+   * back to the platform default receipt styling.
+   */
+  emailTemplate?: EmailTemplateDTO | null;
 }
 
 export class NotificationsService {
@@ -190,6 +196,15 @@ export class NotificationsService {
       }
     }
 
+    // Validate and normalize the custom receipt branding (#572). `null`
+    // explicitly resets the user back to the platform default template.
+    let emailTemplate: EmailTemplateDTO | null | undefined;
+    if (preferences.emailTemplate === null) {
+      emailTemplate = null;
+    } else if (preferences.emailTemplate !== undefined) {
+      emailTemplate = normalizeEmailTemplatePreferences(preferences.emailTemplate);
+    }
+
     const dataToSave: any = {
       telegramEnabled: preferences.telegramEnabled,
       emailEnabled: preferences.emailEnabled,
@@ -202,6 +217,7 @@ export class NotificationsService {
       pushEnabled: preferences.pushEnabled,
       pagerDutyEnabled: preferences.pagerDutyEnabled,
       opsgenieEnabled: preferences.opsgenieEnabled,
+      emailTemplate,
       receiptPreference: preferences.receiptPreference,
       digestFrequency: preferences.digestFrequency,
       assetFilters: preferences.assetFilters,
@@ -275,6 +291,9 @@ export class NotificationsService {
       pagerDutyRoutingKey: decryptPersonalField((pref as any).pagerDutyRoutingKey),
       opsgenieApiKey: decryptPersonalField((pref as any).opsgenieApiKey),
       minAmount: pref.minAmount ? pref.minAmount.toString() : null,
+      // Re-normalized on read so a malformed/legacy JSON row can never leak
+      // into the editor or a receipt email.
+      emailTemplate: parseStoredEmailTemplate(pref.emailTemplate),
     };
   }
 

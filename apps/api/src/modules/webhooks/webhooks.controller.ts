@@ -42,6 +42,30 @@ export class WebhooksController {
     }
   }
 
+  /**
+   * Rotates a webhook's signing secret (#721). The new secret is returned
+   * once in the response body; the previous secret keeps verifying for
+   * SECRET_ROTATION_GRACE_PERIOD_MS so in-flight subscriber deployments
+   * don't start failing signature checks mid-rotation.
+   */
+  async rotateSecret(request: FastifyRequest, reply: FastifyReply) {
+    const parsed = webhookParamsSchema.safeParse(request.params);
+    if (!parsed.success) {
+      throw zodValidationError(parsed, 'Invalid parameters');
+    }
+
+    try {
+      const userId = (request as any).user.id;
+      const result = await webhooksService.rotateSecret(parsed.data.id, userId);
+      return reply.status(200).send({ success: true, rotation: result });
+    } catch (error: any) {
+      if (error.message === 'Webhook not found') {
+        throw new NotFoundError(error.message);
+      }
+      throw error;
+    }
+  }
+
   async testWebhook(request: FastifyRequest, reply: FastifyReply) {
     const parsed = webhookParamsSchema.safeParse(request.params);
     if (!parsed.success) {

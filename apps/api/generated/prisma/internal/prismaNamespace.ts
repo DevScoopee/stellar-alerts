@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.10.1
- * Query Engine version: d1b3f377ca835d73fd50954a5e22128b9ebdd6b8
+ * Prisma Client JS version: 7.9.0
+ * Query Engine version: e922089b7d7502aff4249d5da3420f6fa55fc6ad
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.10.1",
-  engine: "d1b3f377ca835d73fd50954a5e22128b9ebdd6b8"
+  client: "7.9.0",
+  engine: "e922089b7d7502aff4249d5da3420f6fa55fc6ad"
 }
 
 /**
@@ -398,9 +398,11 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   User: 'User',
+  ApiKey: 'ApiKey',
   Wallet: 'Wallet',
   IngestionCursor: 'IngestionCursor',
   Payment: 'Payment',
+  PaymentArchive: 'PaymentArchive',
   OutboxEvent: 'OutboxEvent',
   NotificationPreference: 'NotificationPreference',
   DeliveryLog: 'DeliveryLog',
@@ -452,7 +454,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "wallet" | "ingestionCursor" | "payment" | "outboxEvent" | "notificationPreference" | "deliveryLog" | "paymentChecksum" | "dailyChecksumRoot" | "alertRule" | "alertRuleDispatchLog" | "telegramSyncCode" | "whatsAppDeliveryLog" | "webhook" | "webhookLog" | "webhookCircuitBreaker" | "exportJob" | "transactionSimulation" | "sorobanEventSnapshot" | "sorobanStateAudit" | "sorobanContractSubscription" | "sacTokenMintBurnEvent" | "sacTokenSupply" | "multisigTreasury" | "multisigSignerWatcher" | "pendingMultisigTransaction" | "anchorTransactionWatch" | "dexSwapWatch" | "sorobanTopicIndex" | "sorobanTopicIndexCursor" | "dexSwapEvent" | "securityAuditLog" | "notificationDelivery" | "notificationDeliveryAttempt" | "deadLetter" | "webhookSandboxReplay" | "deadLetterAudit" | "mfaRecoveryCode" | "refreshSession" | "refreshTokenHistory"
+    modelProps: "user" | "apiKey" | "wallet" | "ingestionCursor" | "payment" | "paymentArchive" | "outboxEvent" | "notificationPreference" | "deliveryLog" | "paymentChecksum" | "dailyChecksumRoot" | "alertRule" | "alertRuleDispatchLog" | "telegramSyncCode" | "whatsAppDeliveryLog" | "webhook" | "webhookLog" | "webhookCircuitBreaker" | "exportJob" | "transactionSimulation" | "sorobanEventSnapshot" | "sorobanStateAudit" | "sorobanContractSubscription" | "sacTokenMintBurnEvent" | "sacTokenSupply" | "multisigTreasury" | "multisigSignerWatcher" | "pendingMultisigTransaction" | "anchorTransactionWatch" | "dexSwapWatch" | "sorobanTopicIndex" | "sorobanTopicIndexCursor" | "dexSwapEvent" | "securityAuditLog" | "notificationDelivery" | "notificationDeliveryAttempt" | "deadLetter" | "webhookSandboxReplay" | "deadLetterAudit" | "mfaRecoveryCode" | "refreshSession" | "refreshTokenHistory"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -527,6 +529,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    ApiKey: {
+      payload: Prisma.$ApiKeyPayload<ExtArgs>
+      fields: Prisma.ApiKeyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ApiKeyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ApiKeyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyPayload>
+        }
+        findFirst: {
+          args: Prisma.ApiKeyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ApiKeyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyPayload>
+        }
+        findMany: {
+          args: Prisma.ApiKeyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyPayload>[]
+        }
+        create: {
+          args: Prisma.ApiKeyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyPayload>
+        }
+        createMany: {
+          args: Prisma.ApiKeyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ApiKeyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyPayload>[]
+        }
+        delete: {
+          args: Prisma.ApiKeyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyPayload>
+        }
+        update: {
+          args: Prisma.ApiKeyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyPayload>
+        }
+        deleteMany: {
+          args: Prisma.ApiKeyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ApiKeyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ApiKeyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyPayload>[]
+        }
+        upsert: {
+          args: Prisma.ApiKeyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ApiKeyPayload>
+        }
+        aggregate: {
+          args: Prisma.ApiKeyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateApiKey>
+        }
+        groupBy: {
+          args: Prisma.ApiKeyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApiKeyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ApiKeyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ApiKeyCountAggregateOutputType> | number
         }
       }
     }
@@ -749,6 +825,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PaymentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PaymentCountAggregateOutputType> | number
+        }
+      }
+    }
+    PaymentArchive: {
+      payload: Prisma.$PaymentArchivePayload<ExtArgs>
+      fields: Prisma.PaymentArchiveFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentArchiveFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentArchiveFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentArchiveFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentArchiveFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>
+        }
+        findMany: {
+          args: Prisma.PaymentArchiveFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>[]
+        }
+        create: {
+          args: Prisma.PaymentArchiveCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>
+        }
+        createMany: {
+          args: Prisma.PaymentArchiveCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PaymentArchiveCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>[]
+        }
+        delete: {
+          args: Prisma.PaymentArchiveDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>
+        }
+        update: {
+          args: Prisma.PaymentArchiveUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentArchiveDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentArchiveUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PaymentArchiveUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>[]
+        }
+        upsert: {
+          args: Prisma.PaymentArchiveUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentArchivePayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentArchiveAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePaymentArchive>
+        }
+        groupBy: {
+          args: Prisma.PaymentArchiveGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentArchiveGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentArchiveCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentArchiveCountAggregateOutputType> | number
         }
       }
     }
@@ -3466,6 +3616,23 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const ApiKeyScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  keyHash: 'keyHash',
+  keyPrefix: 'keyPrefix',
+  scopes: 'scopes',
+  isActive: 'isActive',
+  lastUsedAt: 'lastUsedAt',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ApiKeyScalarFieldEnum = (typeof ApiKeyScalarFieldEnum)[keyof typeof ApiKeyScalarFieldEnum]
+
+
 export const WalletScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -3473,6 +3640,7 @@ export const WalletScalarFieldEnum = {
   label: 'label',
   tags: 'tags',
   metadata: 'metadata',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt'
 } as const
 
@@ -3510,6 +3678,23 @@ export const PaymentScalarFieldEnum = {
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const PaymentArchiveScalarFieldEnum = {
+  id: 'id',
+  walletId: 'walletId',
+  txHash: 'txHash',
+  fromAddress: 'fromAddress',
+  amount: 'amount',
+  asset: 'asset',
+  assetIssuer: 'assetIssuer',
+  memo: 'memo',
+  receivedAt: 'receivedAt',
+  createdAt: 'createdAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type PaymentArchiveScalarFieldEnum = (typeof PaymentArchiveScalarFieldEnum)[keyof typeof PaymentArchiveScalarFieldEnum]
 
 
 export const OutboxEventScalarFieldEnum = {
@@ -3550,7 +3735,8 @@ export const NotificationPreferenceScalarFieldEnum = {
   minAmount: 'minAmount',
   enabledChannels: 'enabledChannels',
   language: 'language',
-  filterRules: 'filterRules'
+  filterRules: 'filterRules',
+  emailTemplate: 'emailTemplate'
 } as const
 
 export type NotificationPreferenceScalarFieldEnum = (typeof NotificationPreferenceScalarFieldEnum)[keyof typeof NotificationPreferenceScalarFieldEnum]
@@ -3563,6 +3749,7 @@ export const DeliveryLogScalarFieldEnum = {
   status: 'status',
   error: 'error',
   attempt: 'attempt',
+  durationMs: 'durationMs',
   createdAt: 'createdAt'
 } as const
 
@@ -3661,6 +3848,11 @@ export const WebhookScalarFieldEnum = {
   secretIv: 'secretIv',
   secretAuthTag: 'secretAuthTag',
   keyVersion: 'keyVersion',
+  previousSecretCiphertext: 'previousSecretCiphertext',
+  previousSecretIv: 'previousSecretIv',
+  previousSecretAuthTag: 'previousSecretAuthTag',
+  previousKeyVersion: 'previousKeyVersion',
+  previousSecretExpiresAt: 'previousSecretExpiresAt',
   payloadTemplate: 'payloadTemplate',
   isActive: 'isActive',
   createdAt: 'createdAt'
@@ -3674,6 +3866,7 @@ export const WebhookLogScalarFieldEnum = {
   webhookId: 'webhookId',
   statusCode: 'statusCode',
   responseBody: 'responseBody',
+  durationMs: 'durationMs',
   error: 'error',
   sentAt: 'sentAt',
   createdAt: 'createdAt'
@@ -4162,20 +4355,6 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -4186,6 +4365,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -4368,9 +4561,11 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
+  apiKey?: Prisma.ApiKeyOmit
   wallet?: Prisma.WalletOmit
   ingestionCursor?: Prisma.IngestionCursorOmit
   payment?: Prisma.PaymentOmit
+  paymentArchive?: Prisma.PaymentArchiveOmit
   outboxEvent?: Prisma.OutboxEventOmit
   notificationPreference?: Prisma.NotificationPreferenceOmit
   deliveryLog?: Prisma.DeliveryLogOmit

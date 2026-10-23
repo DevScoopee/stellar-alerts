@@ -52,9 +52,11 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  ApiKey: 'ApiKey',
   Wallet: 'Wallet',
   IngestionCursor: 'IngestionCursor',
   Payment: 'Payment',
+  PaymentArchive: 'PaymentArchive',
   OutboxEvent: 'OutboxEvent',
   NotificationPreference: 'NotificationPreference',
   DeliveryLog: 'DeliveryLog',
@@ -120,6 +122,23 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const ApiKeyScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  keyHash: 'keyHash',
+  keyPrefix: 'keyPrefix',
+  scopes: 'scopes',
+  isActive: 'isActive',
+  lastUsedAt: 'lastUsedAt',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ApiKeyScalarFieldEnum = (typeof ApiKeyScalarFieldEnum)[keyof typeof ApiKeyScalarFieldEnum]
+
+
 export const WalletScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -127,6 +146,7 @@ export const WalletScalarFieldEnum = {
   label: 'label',
   tags: 'tags',
   metadata: 'metadata',
+  deletedAt: 'deletedAt',
   createdAt: 'createdAt'
 } as const
 
@@ -164,6 +184,23 @@ export const PaymentScalarFieldEnum = {
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const PaymentArchiveScalarFieldEnum = {
+  id: 'id',
+  walletId: 'walletId',
+  txHash: 'txHash',
+  fromAddress: 'fromAddress',
+  amount: 'amount',
+  asset: 'asset',
+  assetIssuer: 'assetIssuer',
+  memo: 'memo',
+  receivedAt: 'receivedAt',
+  createdAt: 'createdAt',
+  archivedAt: 'archivedAt'
+} as const
+
+export type PaymentArchiveScalarFieldEnum = (typeof PaymentArchiveScalarFieldEnum)[keyof typeof PaymentArchiveScalarFieldEnum]
 
 
 export const OutboxEventScalarFieldEnum = {
@@ -204,7 +241,8 @@ export const NotificationPreferenceScalarFieldEnum = {
   minAmount: 'minAmount',
   enabledChannels: 'enabledChannels',
   language: 'language',
-  filterRules: 'filterRules'
+  filterRules: 'filterRules',
+  emailTemplate: 'emailTemplate'
 } as const
 
 export type NotificationPreferenceScalarFieldEnum = (typeof NotificationPreferenceScalarFieldEnum)[keyof typeof NotificationPreferenceScalarFieldEnum]
@@ -217,6 +255,7 @@ export const DeliveryLogScalarFieldEnum = {
   status: 'status',
   error: 'error',
   attempt: 'attempt',
+  durationMs: 'durationMs',
   createdAt: 'createdAt'
 } as const
 
@@ -315,6 +354,11 @@ export const WebhookScalarFieldEnum = {
   secretIv: 'secretIv',
   secretAuthTag: 'secretAuthTag',
   keyVersion: 'keyVersion',
+  previousSecretCiphertext: 'previousSecretCiphertext',
+  previousSecretIv: 'previousSecretIv',
+  previousSecretAuthTag: 'previousSecretAuthTag',
+  previousKeyVersion: 'previousKeyVersion',
+  previousSecretExpiresAt: 'previousSecretExpiresAt',
   payloadTemplate: 'payloadTemplate',
   isActive: 'isActive',
   createdAt: 'createdAt'
@@ -328,6 +372,7 @@ export const WebhookLogScalarFieldEnum = {
   webhookId: 'webhookId',
   statusCode: 'statusCode',
   responseBody: 'responseBody',
+  durationMs: 'durationMs',
   error: 'error',
   sentAt: 'sentAt',
   createdAt: 'createdAt'
